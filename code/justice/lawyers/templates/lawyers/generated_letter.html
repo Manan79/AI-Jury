@@ -1,0 +1,94 @@
+{% extends "layout.html" %}
+{% block title %}AI Jury — Generated Legal Letter{% endblock %}
+{% block content %}
+
+<section class="min-h-screen bg-gradient-to-br from-white via-indigo-50/30 to-white dark:from-gray-900 dark:via-indigo-950/20 dark:to-gray-900 py-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Generated Legal Letter</h1>
+            <p class="text-gray-600 dark:text-gray-400">Review and customize your AI-generated {{ letter_type|title }}</p>
+        </div>
+
+        <!-- Actions Bar -->
+        <div class="flex flex-wrap gap-4 justify-between items-center mb-6 p-4 bg-white dark:bg-gray-800 rounded-xl shadow-lg">
+            <div class="flex items-center gap-4">
+                <span class="px-3 py-1 rounded-full text-sm font-medium bg-green-100 dark:bg-green-900/40 text-green-700 dark:text-green-300 ring-1 ring-green-200 dark:ring-green-800">
+                    Generated Successfully
+                </span>
+                <span class="text-sm text-gray-500 dark:text-gray-400">
+                    {{ letter_type|title }}
+                </span>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="copyToClipboard()" 
+                        class="inline-flex items-center gap-2 rounded-lg bg-white dark:bg-gray-700 px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-300 ring-1 ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 transition-all duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
+                        <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
+                    </svg>
+                    Copy Text
+                </button>
+                <button onclick="downloadAsPDF()" 
+                        class="inline-flex items-center gap-2 rounded-lg bg-white dark:bg-gray-700 px-4 py-2 text-sm font-semibold text-gray-700 dark:text-gray-300 ring-1 ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 transition-all duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                    Download PDF
+                </button>
+                <a href="{% url 'legal_letters' %}" 
+                   class="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-2 text-sm font-semibold text-white shadow-md ring-1 ring-indigo-500/40 hover:shadow-lg hover:from-indigo-500 hover:to-purple-500 transition-all duration-200">
+                    Generate New
+                </a>
+            </div>
+        </div>
+
+        <!-- Generated Content -->
+        <div class="glass-light dark:glass rounded-2xl p-8 shadow-lg mb-8">
+            <div class="prose dark:prose-invert max-w-none">
+                <div id="letter-content" class="whitespace-pre-wrap font-serif text-gray-900 dark:text-gray-100 leading-relaxed">
+{{ generated_content }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Regenerate Section -->
+        <div class="text-center">
+            <div class="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-lg">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Not Quite Right?</h3>
+                <p class="text-gray-600 dark:text-gray-400 mb-4">
+                    You can regenerate this letter with different parameters or make specific edits.
+                </p>
+                <div class="flex flex-wrap gap-4 justify-center">
+                    <a href="{% url 'legal_letters' %}" 
+                       class="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-3 text-lg font-semibold text-white shadow-lg shadow-indigo-500/20 ring-1 ring-indigo-500/40 hover:shadow-xl hover:shadow-indigo-500/30 hover:from-indigo-500 hover:to-purple-500 transition-all duration-300">
+                        Generate New Letter
+                    </a>
+                    <a href="{% url 'document_templates' %}" 
+                       class="inline-flex items-center gap-2 rounded-xl bg-white dark:bg-gray-700 px-6 py-3 text-lg font-semibold text-gray-700 dark:text-gray-300 ring-1 ring-gray-300 dark:ring-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 transition-all duration-300">
+                        Browse Templates
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+function copyToClipboard() {
+    const content = document.getElementById('letter-content').textContent;
+    navigator.clipboard.writeText(content).then(() => {
+        // Show success message
+        alert('Letter content copied to clipboard!');
+    });
+}
+
+function downloadAsPDF() {
+    alert('PDF download functionality would be implemented here with a proper PDF generation library.');
+    // In a real implementation, you would:
+    // 1. Send the content to a PDF generation endpoint
+    // 2. Return the PDF file for download
+}
+</script>
+
+{% endblock %}

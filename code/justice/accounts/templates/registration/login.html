@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+{% block title %}Login — AI Jury{% endblock %}
+{% block content %}
+<section class="min-h-[84vh] flex items-center justify-center px-4 py-12 bg-white dark:bg-gray-900">
+    <div class="w-full max-w-md">
+        <div class="mb-8 text-center">
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Welcome back</h1>
+            <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Sign in to your account</p>
+        </div>
+
+        {% if messages %}
+        <div class="mb-4 space-y-2">
+            {% for message in messages %}
+            <div class="rounded-lg px-4 py-3 text-sm {{ message.tags }} {% if 'error' in message.tags %}bg-red-50 text-red-700 ring-1 ring-red-200 dark:bg-red-900/30 dark:text-red-300 dark:ring-red-800{% elif 'success' in message.tags %}bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-300 dark:ring-emerald-800{% else %}bg-indigo-50 text-indigo-700 ring-1 ring-indigo-200 dark:bg-indigo-900/30 dark:text-indigo-300 dark:ring-indigo-800{% endif %}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if form.non_field_errors %}
+        <div class="mb-4 rounded-lg bg-red-50 text-red-700 ring-1 ring-red-200 px-4 py-3 text-sm dark:bg-red-900/30 dark:text-red-300 dark:ring-red-800">
+            {% for error in form.non_field_errors %}
+                <div>{{ error }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if next and not user.is_authenticated %}
+        <div class="mb-4 rounded-lg bg-amber-50 text-amber-800 ring-1 ring-amber-200 px-4 py-3 text-sm dark:bg-amber-900/30 dark:text-amber-300 dark:ring-amber-800">
+            Please login to access this page.
+        </div>
+        {% endif %}
+
+        <div class="rounded-2xl bg-white dark:bg-gray-900 ring-1 ring-gray-200 dark:ring-gray-800 p-6 shadow-lg">
+            <form method="post" action="{% url 'login' %}" class="space-y-5">
+                {% csrf_token %}
+                <div>
+                    <label for="id_username" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Username or email</label>
+                    <input type="text" name="username" id="id_username" required autofocus class="mt-2 w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                </div>
+                <div>
+                    <label for="id_password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Password</label>
+                    <input type="password" name="password" id="id_password" required class="mt-2 w-full rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 px-3 py-2 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                </div>
+                <input type="hidden" name="next" value="{{ next }}" />
+
+                <button type="submit" class="w-full inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md ring-1 ring-indigo-500/40 hover:shadow-lg hover:from-indigo-500 hover:to-purple-500 transition-all">Sign in</button>
+            </form>
+
+            <div class="mt-6 flex items-center justify-between text-sm">
+                <a href="{% url 'password_reset' %}" class="text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">Forgot password?</a>
+                <a href="{% url 'signup' %}" class="text-gray-600 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200">Create account</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

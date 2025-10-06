@@ -1,0 +1,124 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<style>
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+.stat-card {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-left: 4px solid #4f46e5;
+}
+.stat-number {
+    font-size: 2em;
+    font-weight: bold;
+    color: #4f46e5;
+}
+.stat-label {
+    color: #6b7280;
+    font-size: 0.9em;
+}
+.recent-sessions, .daily-stats {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+.session-item {
+    padding: 10px;
+    border-bottom: 1px solid #e5e7eb;
+}
+.session-item:last-child {
+    border-bottom: none;
+}
+.daily-stat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+.button {
+    background: #4f46e5;
+    color: white;
+    padding: 5px 10px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 12px;
+}
+.button:hover {
+    background: #4338ca;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <h1>Chat Analytics Dashboard</h1>
+    
+    <div class="dashboard-stats">
+        <div class="stat-card">
+            <div class="stat-number">{{ total_sessions }}</div>
+            <div class="stat-label">Total Chat Sessions</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">{{ total_messages }}</div>
+            <div class="stat-label">Total Messages</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">{{ user_messages }}</div>
+            <div class="stat-label">User Messages</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">{{ ai_messages }}</div>
+            <div class="stat-label">AI Responses</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">{{ avg_thinking_time }}s</div>
+            <div class="stat-label">Avg Thinking Time</div>
+        </div>
+    </div>
+
+    <div class="grid-2-col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div class="recent-sessions">
+            <h2>Recent Sessions</h2>
+            {% for session in recent_sessions %}
+            <div class="session-item">
+                <strong><a href="/admin/search_app/chatsession/{{ session.id }}/change/">{{ session.title }}</a></strong>
+                <br>
+                <small>Messages: {{ session.message_count }} | Updated: {{ session.updated_at|date:"M d, Y H:i" }}</small>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="daily-stats">
+            <h2>Last 7 Days Activity</h2>
+            {% for stat in daily_stats %}
+            <div class="daily-stat-row">
+                <span>{{ stat.date|date:"M d" }}</span>
+                <span>Sessions: {{ stat.sessions }} | Messages: {{ stat.messages }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="most-active-sessions" style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+        <h2>Most Active Sessions</h2>
+        {% for session in most_active_sessions %}
+        <div class="session-item">
+            <strong><a href="/admin/search_app/chatsession/{{ session.id }}/change/">{{ session.title }}</a></strong>
+            <br>
+            <small>Messages: {{ session.message_count }} | Created: {{ session.created_at|date:"M d, Y" }}</small>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

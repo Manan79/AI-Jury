@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% block title %}Create account — AI Jury{% endblock %}
+{% block content %}
+<section class="min-h-[84vh] flex items-center justify-center px-4 py-12 bg-white dark:bg-gray-900">
+    <div class="w-full max-w-md">
+        <div class="mb-8 text-center">
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Create your account</h1>
+            <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Join AI Jury</p>
+        </div>
+
+        {% if messages %}
+        <div class="mb-4 space-y-2">
+            {% for message in messages %}
+            <div class="rounded-lg px-4 py-3 text-sm {{ message.tags }} {% if 'error' in message.tags %}bg-red-50 text-red-700 ring-1 ring-red-200 dark:bg-red-900/30 dark:text-red-300 dark:ring-red-800{% elif 'success' in message.tags %}bg-emerald-50 text-emerald-700 ring-1 ring-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-300 dark:ring-emerald-800{% else %}bg-indigo-50 text-indigo-700 ring-1 ring-indigo-200 dark:bg-indigo-900/30 dark:text-indigo-300 dark:ring-indigo-800{% endif %}">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="rounded-2xl bg-white dark:bg-gray-900 ring-1 ring-gray-200 dark:ring-gray-800 p-6 shadow-lg">
+            <form method="post" class="space-y-5">
+                {% csrf_token %}
+
+                {% for field in form %}
+                <div>
+                    <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ field.label }}</label>
+                    <div class="mt-2">{{ field }}</div>
+                    {% if field.help_text %}
+                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">{{ field.help_text }}</p>
+                    {% endif %}
+                    {% if field.errors %}
+                    <div class="mt-2 text-sm text-red-600 dark:text-red-400">{{ field.errors }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <button type="submit" class="w-full inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md ring-1 ring-indigo-500/40 hover:shadow-lg hover:from-indigo-500 hover:to-purple-500 transition-all">Create account</button>
+            </form>
+
+            <p class="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
+                Already have an account?
+                <a href="{% url 'login' %}" class="text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">Sign in</a>
+            </p>
+        </div>
+    </div>
+</section>
+{% endblock %}

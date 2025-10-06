@@ -1,0 +1,107 @@
+{% extends "layout.html" %}
+{% block title %}AI Jury — Legal Letter Generator{% endblock %}
+{% block content %}
+
+<section class="min-h-screen bg-gradient-to-br from-white via-indigo-50/30 to-white dark:from-gray-900 dark:via-indigo-950/20 dark:to-gray-900 py-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">Legal Letter Generator</h1>
+            <p class="text-xl text-gray-600 dark:text-gray-400">Generate professional legal letters using AI powered by comprehensive legal databases</p>
+        </div>
+
+        <!-- Generation Form -->
+        <div class="glass-light dark:glass rounded-2xl p-8 shadow-lg">
+            <form method="post" action="{% url 'generate_legal_letter' %}">
+                {% csrf_token %}
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label for="letter_type" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Letter Type *
+                        </label>
+                        <select name="letter_type" id="letter_type" required
+                                class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-3 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200">
+                            <option value="">Select letter type</option>
+                            <option value="demand_letter">Demand Letter</option>
+                            <option value="cease_desist">Cease and Desist</option>
+                            <option value="legal_notice">Legal Notice</option>
+                            <option value="settlement_offer">Settlement Offer</option>
+                            <option value="contract_termination">Contract Termination</option>
+                            <option value="payment_reminder">Payment Reminder</option>
+                            <option value="custom">Custom Letter</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="recipient_info" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Recipient Information *
+                        </label>
+                        <input type="text" name="recipient_info" id="recipient_info" required
+                               placeholder="Name, address, and contact details"
+                               class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-3 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200">
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <label for="case_details" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Case Details *
+                    </label>
+                    <textarea name="case_details" id="case_details" required rows="6"
+                              placeholder="Describe the case facts, relevant dates, amounts, and specific demands..."
+                              class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-3 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 resize-vertical"></textarea>
+                </div>
+
+                <div class="mb-8">
+                    <label for="additional_instructions" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Additional Instructions
+                    </label>
+                    <textarea name="additional_instructions" id="additional_instructions" rows="3"
+                              placeholder="Any specific legal references, tone preferences, or additional requirements..."
+                              class="w-full rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-3 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-200 resize-vertical"></textarea>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <a href="{% url 'document_templates' %}" 
+                       class="text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 dark:hover:text-indigo-300 font-medium transition-colors duration-200">
+                        Browse Templates
+                    </a>
+                    <button type="submit"
+                            class="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 px-8 py-3.5 text-lg font-semibold text-white shadow-lg shadow-indigo-500/20 ring-1 ring-indigo-500/40 hover:shadow-xl hover:shadow-indigo-500/30 hover:from-indigo-500 hover:to-purple-500 transition-all duration-300 transform hover:-translate-y-0.5">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                        </svg>
+                        Generate Letter
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Info Section -->
+        <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="text-center p-6">
+                <div class="h-12 w-12 rounded-lg bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center mx-auto mb-4">
+                    <span class="text-2xl">🔒</span>
+                </div>
+                <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Confidential</h3>
+                <p class="text-sm text-gray-600 dark:text-gray-400">Your data is secure and encrypted</p>
+            </div>
+            <div class="text-center p-6">
+                <div class="h-12 w-12 rounded-lg bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center mx-auto mb-4">
+                    <span class="text-2xl">⚡</span>
+                </div>
+                <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Fast Generation</h3>
+                <p class="text-sm text-gray-600 dark:text-gray-400">Generate documents in seconds</p>
+            </div>
+            <div class="text-center p-6">
+                <div class="h-12 w-12 rounded-lg bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center mx-auto mb-4">
+                    <span class="text-2xl">🎯</span>
+                </div>
+                <h3 class="font-semibold text-gray-900 dark:text-white mb-2">Legal Precision</h3>
+                <p class="text-sm text-gray-600 dark:text-gray-400">Based on legal precedents</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
